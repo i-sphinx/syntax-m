@@ -1,36 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    // Load the dark mode state from localStorage
-    const darkMode = localStorage.getItem("darkMode") === "true";
-    setIsDarkMode(darkMode);
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
+  const { theme } = useSelector((state) => state.theme);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const toggleDarkMode = () => {
-    const darkMode = !isDarkMode;
-    setIsDarkMode(darkMode);
-    localStorage.setItem("darkMode", darkMode);
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
   };
 
   const toggleDropdown = () => {
@@ -179,10 +161,10 @@ const Header = () => {
                 )}
 
                 <button
-                  onClick={toggleDarkMode}
                   className="block md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  onClick={() => dispatch(toggleTheme())}
                 >
-                  {isDarkMode ? (
+                  {theme === "light" ? (
                     <svg
                       className="w-8 h-6"
                       fill="none"
@@ -327,10 +309,10 @@ const Header = () => {
         )}
 
         <button
-          onClick={toggleDarkMode}
           className="block md:p-0 rounded-full text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+          onClick={() => dispatch(toggleTheme())}
         >
-          {isDarkMode ? (
+          {theme === "light" ? (
             <svg
               className="w-6 h-6"
               fill="none"

@@ -145,12 +145,13 @@ const Header = () => {
               </li>
 
               <div className="flex justify-between p-10">
-                <button
+                <Link
+                  to="/signin"
                   type="button"
                   className="text-white bg-light-primary dark:bg-dark-primary hover:bg-light-secondary dark:hover:bg-dark-secondary focus:ring-4 focus:outline-none focus:ring-light-secondary dark:focus:ring-dark-secondary font-medium rounded-lg text-xs md:text-sm px-4 py-2"
                 >
                   Sign In
-                </button>
+                </Link>
                 <button
                   onClick={toggleDarkMode}
                   className="block md:p-0 rounded-full text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
@@ -273,12 +274,13 @@ const Header = () => {
               )}
             </button>
           </li>
-          <button
+          <Link
+            to="/Signin"
             type="button"
             className="text-white bg-light-primary dark:bg-dark-primary hover:bg-light-secondary dark:hover:bg-dark-secondary focus:ring-4 focus:outline-none focus:ring-light-secondary dark:focus:ring-dark-secondary font-medium rounded-lg text-xs md:text-sm px-4 py-2"
           >
             Sign In
-          </button>
+          </Link>
         </ul>
       </div>
     </nav>

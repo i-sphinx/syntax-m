@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Oauth from "../components/Oauth";
 
 const Signup = () => {
   const [formData, setFormData] = useState({});
@@ -138,6 +139,7 @@ const Signup = () => {
               )}
             </button>
 
+            <Oauth></Oauth>
             <div className="mt-6 text-center">
               <span>Already have an account? </span>
               <Link to="/Signin" className="text-blue-500 hover:underline">

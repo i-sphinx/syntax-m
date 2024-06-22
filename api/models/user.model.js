@@ -17,6 +17,15 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    profilePic: {
+      type: String,
+      default:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCFoiI5GIjAzBXk4FCP0PhikiWkT5cbBQi492KoVj6hXm1W2zppE3hBQ6fdL07Wv-PYjU&usqp=CAU",
+    },
+    phoneNumber: {
+      type: String,
+      default: "0000000000",
+    },
   },
   { timestamps: true }
 );

@@ -6,6 +6,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
+import Oauth from "../components/Oauth";
 
 const Signin = () => {
   const [formData, setFormData] = useState({});
@@ -36,7 +37,7 @@ const Signin = () => {
       if (data.success === false) {
         dispatch(signInFailure(data.message));
       }
-      
+
       if (res.ok) {
         dispatch(signInSuccess(data.message));
         navigate("/");
@@ -127,6 +128,8 @@ const Signin = () => {
                 "Sign In"
               )}
             </button>
+
+            <Oauth></Oauth>
 
             <div className="mt-6 text-center">
               <span>Don't have an account? </span>

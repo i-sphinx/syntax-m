@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     // Load the dark mode state from localStorage
@@ -27,6 +31,10 @@ const Header = () => {
     } else {
       document.documentElement.classList.remove("dark");
     }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -144,21 +152,39 @@ const Header = () => {
                 </Link>
               </li>
 
+              {/* profile pic mobile */}
               <div className="flex justify-between p-10">
-                <Link
-                  to="/signin"
-                  type="button"
-                  className="text-white bg-light-primary dark:bg-dark-primary hover:bg-light-secondary dark:hover:bg-dark-secondary focus:ring-4 focus:outline-none focus:ring-light-secondary dark:focus:ring-dark-secondary font-medium rounded-lg text-xs md:text-sm px-4 py-2"
-                >
-                  Sign In
-                </Link>
+                {currentUser ? (
+                  <>
+                    <Link
+                      to={"/dashboard?tab=profile"}
+                      className="flex items-center text-sm font-medium text-gray-900 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600"
+                      onClick={toggleMenu}
+                    >
+                      <img
+                        className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-500 dark:ring-gray-500"
+                        src={currentUser.profilePic}
+                        alt="user"
+                      />
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    to="/signin"
+                    className="text-white bg-light-primary dark:bg-dark-primary hover:bg-light-secondary dark:hover:bg-dark-secondary focus:ring-4 focus:outline-none focus:ring-light-secondary dark:focus:ring-dark-secondary font-medium rounded-lg text-xs md:text-sm px-4 py-2"
+                    onClick={toggleMenu}
+                  >
+                    Sign In
+                  </Link>
+                )}
+
                 <button
                   onClick={toggleDarkMode}
-                  className="block md:p-0 rounded-full text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="block md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   {isDarkMode ? (
                     <svg
-                      className="w-6 h-6"
+                      className="w-8 h-6"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -201,13 +227,14 @@ const Header = () => {
         </div>
       )}
 
-      {/* Default non-mobile menu */}
-      <div className="hidden md:flex items-center justify-between w-full md:w-auto md:order-1">
-        <ul className="flex space-x-4 text-lg font-medium">
+      {/* Center-aligned desktop menu........................................... */}
+
+      <div className="hidden md:flex flex-1 justify-center">
+        <ul className="flex space-x-8">
           <li>
             <Link
               to="/"
-              className="block md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500"
+              className="block text-gray-900 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2"
             >
               Home
             </Link>
@@ -215,7 +242,7 @@ const Header = () => {
           <li>
             <Link
               to="/About"
-              className="block md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              className="block text-gray-900 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2"
             >
               About
             </Link>
@@ -223,7 +250,7 @@ const Header = () => {
           <li>
             <Link
               to="/Project"
-              className="block md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              className="block text-gray-900 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2"
             >
               Projects
             </Link>
@@ -231,57 +258,110 @@ const Header = () => {
           <li>
             <Link
               to="/Dashboard"
-              className="block md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              className="block text-gray-900 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2"
             >
               Dashboard
             </Link>
           </li>
-          <li>
+        </ul>
+      </div>
+
+      {/* Profile Picture ..................*/}
+
+      <div className="hidden md:flex items-center space-x-4">
+        {currentUser ? (
+          <div className="relative">
             <button
-              onClick={toggleDarkMode}
-              className="block md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              id="dropdownDefaultButton"
+              className="flex items-center text-sm font-medium text-gray-900 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600"
+              type="button"
+              onClick={toggleDropdown}
             >
-              {isDarkMode ? (
-                <svg
-                  className="w-8 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 3v1m0 16v1m8.657-4.657l-.707.707m-14.85 0l-.707-.707M21 12h-1m-16 0H3m2.464-7.536l-.707.707m0 14.85l-.707-.707M16.95 7.05l-.707.707m-9.192 9.192l-.707-.707M12 5a7 7 0 1 1 0 14 7 7 0 0 1 0-14z"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-8 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 3.25v.085a9.75 9.75 0 0 0 0 17.33v.085A9.75 9.75 0 1 1 12 3.25z"
-                  />
-                </svg>
-              )}
+              <img
+                className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+                src={currentUser.profilePic}
+                alt="user"
+              />
             </button>
-          </li>
+            {isDropdownOpen && (
+              <div className="absolute inline-block text-sm right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg py-1 z-50">
+                <div className="text-xs border-b-2 max-w-[80%] mx-auto p-0 m-0">
+                  <span
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    {currentUser.username}
+                  </span>
+                  <span
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    {currentUser.email}
+                  </span>
+                </div>
+                <Link
+                  to="/Dashboard"
+                  className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/"
+                  className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  Logout
+                </Link>
+              </div>
+            )}
+          </div>
+        ) : (
           <Link
-            to="/Signin"
+            to="/signin"
             type="button"
             className="text-white bg-light-primary dark:bg-dark-primary hover:bg-light-secondary dark:hover:bg-dark-secondary focus:ring-4 focus:outline-none focus:ring-light-secondary dark:focus:ring-dark-secondary font-medium rounded-lg text-xs md:text-sm px-4 py-2"
           >
             Sign In
           </Link>
-        </ul>
+        )}
+
+        <button
+          onClick={toggleDarkMode}
+          className="block md:p-0 rounded-full text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+        >
+          {isDarkMode ? (
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 3v1m0 16v1m8.657-4.657l-.707.707m-14.85 0l-.707-.707M21 12h-1m-16 0H3m2.464-7.536l-.707.707m0 14.85l-.707-.707M16.95 7.05l-.707.707m-9.192 9.192l-.707-.707M12 5a7 7 0 1 1 0 14 7 7 0 0 1 0-14z"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="w-8 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 3.25v.085a9.75 9.75 0 0 0 0 17.33v.085A9.75 9.75 0 1 1 12 3.25z"
+              />
+            </svg>
+          )}
+        </button>
       </div>
     </nav>
   );

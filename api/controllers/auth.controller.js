@@ -50,7 +50,7 @@ export const signin = async (req, res, next) => {
     }
 
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_KEY);
-    const { password: pass, ...rest } = validUser._doc;
+    const { password: pass, phoneNumber: phone, ...rest } = validUser._doc;
     res
       .status(200)
       .cookie("access_token", token, {
@@ -63,12 +63,12 @@ export const signin = async (req, res, next) => {
 };
 
 export const google = async (req, res, next) => {
-  const { email, name, googlePhotoUrl,  } = req.body;
+  const { email, name, googlePhotoUrl, phoneNumber } = req.body;
   try {
     const user = await User.findOne({ email });
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_KEY);
-      const { password: pass, ...rest } = user._doc;
+      const { password: pass, phoneNumber: phone, ...rest } = user._doc;
       res
         .status(200)
         .cookie("access_token", token, {
@@ -92,7 +92,7 @@ export const google = async (req, res, next) => {
       });
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_KEY);
-      const { password: pass, ...rest } = newUser._doc;
+      const { password: pass, phoneNumber: phone, ...rest } = newUser._doc;
       res
         .status(200)
         .cookie("access_token", token, {

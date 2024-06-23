@@ -26,14 +26,14 @@ function Oauth() {
           phoneNumber: resultsFromGoogle.user.phoneNumber,
         }),
       });
-      const data = await res.json(); // Fixed the typo here
+      const data = await res.json();
 
       if (res.ok) {
         dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   };
 

@@ -4,8 +4,8 @@ import Oauth from "../components/Oauth";
 
 const Signup = () => {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null); // State for error message
-  const [loading, setLoading] = useState(false); // State for loading indicator
+  const [errorMessage, setErrorMessage] = useState(null); 
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
 
   const handleChange = (e) => {

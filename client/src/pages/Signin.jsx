@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,47 +6,41 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
-import Oauth from "../components/Oauth";
+import OAuth from "../components/Oauth";
 
-const Signin = () => {
+export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.password || !formData.email) {
-      return dispatch(signInFailure("Please fill out all fields"));
+    if (!formData.email || !formData.password) {
+      return dispatch(signInFailure("Please fill all the fields"));
     }
-
     try {
       dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
-        headers: { "Content-type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       const data = await res.json();
       if (data.success === false) {
         dispatch(signInFailure(data.message));
       }
 
       if (res.ok) {
-        dispatch(signInSuccess(data.message));
+        dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-light-background dark:bg-gray-900 text-light-text dark:text-dark-text">
       <div className="flex flex-col md:flex-row w-full max-w-4xl p-8 gap-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
@@ -66,6 +60,7 @@ const Signin = () => {
             radios, textareas, selects, file uploads, toggle switches, and more.
           </p>
         </div>
+        {/* right */}
 
         <div className="flex-1">
           <form
@@ -73,17 +68,15 @@ const Signin = () => {
             onSubmit={handleSubmit}
           >
             <h2 className="text-2xl font-semibold text-center mb-6">Sign In</h2>
-
             <div className="mb-4">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Email
               </label>
               <input
                 type="email"
+                placeholder="name@company.com"
                 id="email"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Email"
-                autoComplete="on"
                 onChange={handleChange}
               />
             </div>
@@ -93,17 +86,16 @@ const Signin = () => {
               </label>
               <input
                 type="password"
+                placeholder="********"
                 id="password"
+                autoComplete="current-password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="*******"
-                autoComplete="on"
                 onChange={handleChange}
               />
             </div>
-
             <button
-              type="submit"
               className="w-full text-white bg-light-primary dark:bg-dark-primary hover:bg-light-secondary dark:hover:bg-dark-secondary focus:ring-4 focus:outline-none focus:ring-light-secondary dark:focus:ring-dark-secondary font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50"
+              type="submit"
               disabled={loading}
             >
               {loading ? (
@@ -130,8 +122,7 @@ const Signin = () => {
                 "Sign In"
               )}
             </button>
-
-            <Oauth></Oauth>
+            <OAuth />
 
             <div className="mt-6 text-center">
               <span>Don't have an account? </span>
@@ -139,7 +130,6 @@ const Signin = () => {
                 Sign Up
               </Link>
             </div>
-
             {errorMessage && (
               <div
                 className="mt-4 text-sm text-red-600 bg-red-100 rounded-lg p-3 dark:bg-red-800 dark:text-red-200"
@@ -153,6 +143,4 @@ const Signin = () => {
       </div>
     </div>
   );
-};
-
-export default Signin;
+}

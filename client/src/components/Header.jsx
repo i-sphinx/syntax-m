@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
+import { signoutSuccess } from "../redux/user/userSlice";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,6 +18,24 @@ const Header = () => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleSignout = async () => {
+    try {
+      console.log("functioncalled");
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        console.log("logiut succes");
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -145,7 +164,7 @@ const Header = () => {
                     >
                       <img
                         className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-500 dark:ring-gray-500"
-                        src={currentUser.profilePic}
+                        src={currentUser.profilePicture}
                         alt="user"
                       />
                     </Link>
@@ -261,40 +280,44 @@ const Header = () => {
             >
               <img
                 className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-                src={currentUser.profilePic}
+                src={currentUser.profilePicture}
                 alt="user"
               />
             </button>
             {isDropdownOpen && (
               <div className="absolute inline-block text-sm right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg py-1 z-50">
                 <div className="text-xs border-b-2 max-w-[80%] mx-auto p-0 m-0">
-                  <span
-                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    {currentUser.username}
-                  </span>
-                  <span
-                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    {currentUser.email}
-                  </span>
+                  <Link to="/dashboard?tab=profile">
+                    <span
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      {currentUser.username}
+                    </span>
+                  </Link>
+                  <Link to="/dashboard?tab=profile">
+                    <span
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      {currentUser.email}
+                    </span>
+                  </Link>
                 </div>
                 <Link
-                  to="/Dashboard"
+                  to="/dashboard?tab=profile"
                   className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                   onClick={() => setIsDropdownOpen(false)}
                 >
                   Profile
                 </Link>
-                <Link
-                  to="/"
+                <button
+                  // to="/"
                   className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  onClick={() => setIsDropdownOpen(false)}
+                  onClick={(() => setIsDropdownOpen(false), handleSignout)}
                 >
                   Logout
-                </Link>
+                </button>
               </div>
             )}
           </div>

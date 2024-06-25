@@ -1,19 +1,19 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   return (
     <div className="grid lg:grid-cols-2 gap-12 min-h-screen w-full h-full bg-light-background dark:bg-gray-900 ">
       {/* Left Side */}
       <div className="flex flex-col items-center justify-center ">
-        <svg
+        <img
           className="w-48 h-48 lg:w-64 lg:h-64 bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full p-4 mb-10 lg:mb-20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></svg>
+          src={currentUser.profilePicture}
+          alt="Author"
+        />
+
         <div className="text-center space-y-4 p-2">
           <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-200 mb-4">
             Hi there, I'm Prince!

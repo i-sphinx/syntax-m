@@ -4,8 +4,8 @@ import Oauth from "../components/Oauth";
 
 const Signup = () => {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null); 
-  const [loading, setLoading] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,7 +25,7 @@ const Signup = () => {
       setErrorMessage(null);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
-        headers: { "Content-type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 

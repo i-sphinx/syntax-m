@@ -1,11 +1,10 @@
-import React from "react";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 import { app } from "../firebase";
 import { useDispatch } from "react-redux";
 import { signInSuccess } from "../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
-function Oauth() {
+export default function Oauth() {
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,9 +12,11 @@ function Oauth() {
   const handleGoogleClick = async () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
-
     try {
       const resultsFromGoogle = await signInWithPopup(auth, provider);
+      // Assuming you have the user's phone number in the Google profile
+      const phoneNumber = resultsFromGoogle.user.phoneNumber || "";
+
       const res = await fetch("/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -23,17 +24,17 @@ function Oauth() {
           name: resultsFromGoogle.user.displayName,
           email: resultsFromGoogle.user.email,
           googlePhotoUrl: resultsFromGoogle.user.photoURL,
-          phoneNumber: resultsFromGoogle.user.phoneNumber,
+          phoneNumber, // Include phone number
         }),
       });
-      const data = await res.json();
 
+      const data = await res.json();
       if (res.ok) {
         dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-      next(error);
+      console.log(error);
     }
   };
 
@@ -62,5 +63,3 @@ function Oauth() {
     </button>
   );
 }
-
-export default Oauth;

@@ -5,12 +5,12 @@ const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <div className="grid lg:grid-cols-2 gap-12 min-h-screen w-full h-full bg-light-background dark:bg-gray-900 ">
+    <div className="grid lg:grid-cols-2 gap-12 min-h-screen w-full h-full bg-light-background dark:bg-gray-900 pt-10">
       {/* Left Side */}
       <div className="flex flex-col items-center justify-center ">
         <img
           className="w-48 h-48 lg:w-64 lg:h-64 bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full p-4 mb-10 lg:mb-20"
-          src={currentUser.profilePicture}
+          src="/images/53920.jpg"
           alt="Author"
         />
 

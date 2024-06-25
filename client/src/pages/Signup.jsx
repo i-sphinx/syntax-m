@@ -1,25 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Oauth from "../components/Oauth";
 
-const Signup = () => {
+export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.username || !formData.password || !formData.email) {
-      setErrorMessage("Please fill out all fields");
-      return;
+    if (!formData.username || !formData.email || !formData.password) {
+      return setErrorMessage("Please fill out all fields.");
     }
-
     try {
       setLoading(true);
       setErrorMessage(null);
@@ -28,24 +23,19 @@ const Signup = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
-      if (!res.ok) {
-        throw new Error("Signup failed");
-      } else if (res.ok) {
-        navigate("/Signin");
-      }
-
       const data = await res.json();
       if (data.success === false) {
         return setErrorMessage(data.message);
       }
+      setLoading(false);
+      if (res.ok) {
+        navigate("/signin");
+      }
     } catch (error) {
       setErrorMessage(error.message);
-    } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-light-background dark:bg-gray-900 text-light-text dark:text-dark-text">
       <div className="flex flex-col md:flex-row w-full max-w-4xl p-8 gap-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
@@ -65,6 +55,7 @@ const Signup = () => {
             radios, textareas, selects, file uploads, toggle switches, and more.
           </p>
         </div>
+        {/* right */}
 
         <div className="flex-1">
           <form
@@ -81,7 +72,7 @@ const Signup = () => {
                 id="username"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Username"
-                autoComplete="on"
+                autoComplete="username"
                 onChange={handleChange}
               />
             </div>
@@ -94,7 +85,7 @@ const Signup = () => {
                 id="password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Password"
-                autoComplete="on"
+                autoComplete="password"
                 onChange={handleChange}
               />
             </div>
@@ -141,15 +132,14 @@ const Signup = () => {
                 "Sign Up"
               )}
             </button>
+            <Oauth />
 
-            <Oauth></Oauth>
             <div className="mt-6 text-center">
               <span>Already have an account? </span>
               <Link to="/Signin" className="text-blue-500 hover:underline">
                 Sign In
               </Link>
             </div>
-
             {errorMessage && (
               <div
                 className="mt-4 text-sm text-red-600 bg-red-100 rounded-lg p-3 dark:bg-red-800 dark:text-red-200"
@@ -163,6 +153,4 @@ const Signup = () => {
       </div>
     </div>
   );
-};
-
-export default Signup;
+}

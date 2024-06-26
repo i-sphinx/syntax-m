@@ -90,13 +90,13 @@ const CreatePost = () => {
           className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 space-y-6"
           onSubmit={handleSubmit}
         >
-          <div className="flex flex-col gap-4 sm:flex-row justify-between p-2">
+          <div className="flex flex-col gap-4 sm:flex-row justify-between py-2 h-14">
             <input
               type="text"
               placeholder="Title"
               required
               id="title"
-              className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="flex-2 outline-none bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
@@ -105,7 +105,7 @@ const CreatePost = () => {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="flex-1 min-w-48 outline-none bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option value="uncategorized">Select a category</option>
               <option value="javascript">JavaScript</option>
@@ -113,21 +113,21 @@ const CreatePost = () => {
               <option value="nextjs">Next.js</option>
             </select>
           </div>
-          <div className="flex flex-row gap-4 items-center justify-between p-3">
+          <div className="flex flex-row gap-4 items-center justify-between">
             <input
               type="file"
               accept="image/*"
               onChange={(e) => setFile(e.target.files[0])}
-              className="block w-full text-sm text-gray-900 border px-4 py-2 border-gray-500 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              className="block w-full text-sm text-gray-900 dark:text-slate-300 border px-4 py-2 border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
             />
             <button
               type="button"
               onClick={handleUploadImage}
               disabled={imageUploadProgress}
-              className="inline-flex items-center justify-center px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="inline-flex items-center justify-center uppercase px-1 bg-gray-200 dark:bg-gray-700 py-1 text-sm font-medium rounded-xl text-gray-700 dark:text-slate-200 border hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               {imageUploadProgress ? (
-                <div className="w-16 h-16">
+                <div className="w-12 h-12 rounded-full">
                   <CircularProgressbar
                     value={imageUploadProgress}
                     text={`${imageUploadProgress || 0}%`}

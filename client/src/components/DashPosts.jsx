@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const DashPosts = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const [showMore, setShowMore] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
 
   useEffect(() => {
@@ -13,6 +14,9 @@ const DashPosts = () => {
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
+          if (data.posts.length < 9) {
+            setShowMore(false);
+          }
         }
       } catch (error) {
         console.log(error.message);
@@ -23,8 +27,26 @@ const DashPosts = () => {
     }
   }, [currentUser._id]);
 
+  const handleShowMore = async () => {
+    const startIndex = userPosts.length;
+    try {
+      const res = await fetch(
+        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setUserPosts((prev) => [...prev, ...data.posts]);
+        if (data.posts.length < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="w-full p-4 bg-light-background dark:bg-gray-900 text-light-text dark:text-dark-text">
+    <div className="w-full max-w-[80%] overflow-auto p-4 bg-light-background dark:bg-gray-900 text-light-text dark:text-dark-text">
       {currentUser.isAdmin && userPosts.length > 0 ? (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -74,20 +96,22 @@ const DashPosts = () => {
                   <td className="px-6 py-4">
                     <Link
                       to={`/post/${post.slug}`}
-                      className="text-blue-600 dark:text-blue-200 hover:underline"
+                      className="text-slate-800 dark:text-blue-200 font-sans text-[120%]"
                     >
-                      <span className="block truncate">{post.title}</span>
+                      <span className="block truncate max-w-2xl">
+                        {post.title}
+                      </span>
                     </Link>
                   </td>
                   <td className="px-6 py-4">{post.category}</td>
                   <td className="px-6 py-4 text-right">
-                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                    <span className="font-medium text-red-500 dark:text-blue-500 hover:underline cursor-pointer">
                       Delete
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <Link to={`/update-post/${post._id}`}>
-                      <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                      <span className="font-medium text-green-500 dark:text-blue-500 hover:underline">
                         Edit
                       </span>
                     </Link>
@@ -96,6 +120,14 @@ const DashPosts = () => {
               ))}
             </tbody>
           </table>
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className="w-full self-center text-green-500 text-sm py-7"
+            >
+              Show more
+            </button>
+          )}
         </div>
       ) : (
         <p className="text-gray-800 dark:text-gray-200">

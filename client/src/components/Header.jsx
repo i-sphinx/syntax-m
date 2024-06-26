@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
+import { Link, useLocation } from "react-router-dom";
+
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
 
@@ -235,7 +238,9 @@ const Header = () => {
           <li>
             <Link
               to="/"
-              className="block text-gray-900 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2"
+              className={`block text-gray-900 dark:text-white rounded px-4 py-2 underline-animation ${
+                location.pathname === "/" ? "underline-active" : ""
+              }`}
             >
               Home
             </Link>
@@ -243,7 +248,9 @@ const Header = () => {
           <li>
             <Link
               to="/About"
-              className="block text-gray-900 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2"
+              className={`block text-gray-900 dark:text-white rounded px-4 py-2 underline-animation ${
+                location.pathname === "/About" ? "underline-active" : ""
+              }`}
             >
               About
             </Link>
@@ -251,7 +258,9 @@ const Header = () => {
           <li>
             <Link
               to="/Project"
-              className="block text-gray-900 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2"
+              className={`block text-gray-900 dark:text-white rounded px-4 py-2 underline-animation ${
+                location.pathname === "/Project" ? "underline-active" : ""
+              }`}
             >
               Projects
             </Link>
@@ -259,7 +268,9 @@ const Header = () => {
           <li>
             <Link
               to="/Dashboard"
-              className="block text-gray-900 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2"
+              className={`block text-gray-900 dark:text-white rounded px-4 py-2 underline-animation ${
+                location.pathname === "/Dashboard" ? "underline-active" : ""
+              }`}
             >
               Dashboard
             </Link>
@@ -279,7 +290,7 @@ const Header = () => {
               onClick={toggleDropdown}
             >
               <img
-                className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+                className="w-10 h-10 p-1 rounded-full ring-2 ring-blue-400 dark:ring-gray-500"
                 src={currentUser.profilePicture}
                 alt="user"
               />
@@ -312,11 +323,10 @@ const Header = () => {
                   Profile
                 </Link>
                 <button
-                  // to="/"
                   className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                   onClick={(() => setIsDropdownOpen(false), handleSignout)}
                 >
-                  Logout
+                  Sign Out
                 </button>
               </div>
             )}
@@ -332,25 +342,47 @@ const Header = () => {
         )}
 
         <button
-          className="block md:p-0 rounded-full text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+          className="block ring-2 ring-blue-400 dark:ring-gray-500 md:p-1 rounded-full text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
           onClick={() => dispatch(toggleTheme())}
         >
           {theme === "light" ? (
             <svg
-              className="w-6 h-6"
-              fill="none"
+              className="w-8 h-6"
+              fill="yellow"
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <circle
+                cx="12"
+                cy="12"
+                r="5"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
               <path
+                stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 3v1m0 16v1m8.657-4.657l-.707.707m-14.85 0l-.707-.707M21 12h-1m-16 0H3m2.464-7.536l-.707.707m0 14.85l-.707-.707M16.95 7.05l-.707.707m-9.192 9.192l-.707-.707M12 5a7 7 0 1 1 0 14 7 7 0 0 1 0-14z"
+                strokeWidth="1"
+                d="M12 1v2m0 18v2m8.66-16.66l-1.41 1.41M4.75 19.25l-1.41-1.41M23 12h-2M3 12H1m16.66 8.66l-1.41-1.41M4.75 4.75L3.34 6.16"
               />
             </svg>
           ) : (
+            // <svg
+            //   className="w-8 h-6"
+            //   fill="none"
+            //   stroke="currentColor"
+            //   viewBox="0 0 24 24"
+            //   xmlns="http://www.w3.org/2000/svg"
+            // >
+            //   <path
+            //     strokeLinecap="round"
+            //     strokeLinejoin="round"
+            //     strokeWidth="1.5"
+            //     d="M12 3v1m0 16v1m8.657-4.657l-.707.707m-14.85 0l-.707-.707M21 12h-1m-16 0H3m2.464-7.536l-.707.707m0 14.85l-.707-.707M16.95 7.05l-.707.707m-9.192 9.192l-.707-.707M12 5a7 7 0 1 1 0 14 7 7 0 0 1 0-14z"
+            //   />
+            // </svg>
             <svg
               className="w-8 h-6"
               fill="none"

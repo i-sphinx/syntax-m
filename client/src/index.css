@@ -8,3 +8,27 @@ body {
 .ql-editor {
   font-size: 1.05rem;
 }
+
+.underline-animation {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.underline-animation::after {
+  content: "";
+  position: absolute;
+  width: 5%;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: currentColor;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+.underline-active::after {
+  width: 80%;
+  left: 10%;
+  transform: translateX(0);
+}

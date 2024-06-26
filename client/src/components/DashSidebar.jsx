@@ -24,7 +24,6 @@ const DashSidebar = () => {
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
-                {/* Profile Icon */}
                 <path d="M12 2a7 7 0 0 0 0 14 7 7 0 0 0 0-14zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0 2c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" />
               </svg>
               <span className="ml-4">Profile</span>
@@ -48,10 +47,38 @@ const DashSidebar = () => {
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  {/* Posts Icon */}
                   <path d="M20 2H4c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 4h16v2H4V4zm0 16v-2h16v2H4zm16-6H4v-2h16v2z" />
                 </svg>
                 <span className="ml-4">Posts</span>
+              </Link>
+            </li>
+          )}
+          {currentUser.isAdmin && (
+            <li>
+              <Link
+                to="/dashboard?tab=users"
+                className={`flex items-center p-3 my-2 rounded-lg transition duration-200 ease-in-out ${
+                  activeTab === "users"
+                    ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-200"
+                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
+              >
+                {/* SVG icon representing a group of people */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m3-4a4 4 0 100-8 4 4 0 000 8zm6 4a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                </svg>
+                <span className="ml-4">Users</span>
               </Link>
             </li>
           )}
@@ -62,4 +89,3 @@ const DashSidebar = () => {
 };
 
 export default DashSidebar;
-  

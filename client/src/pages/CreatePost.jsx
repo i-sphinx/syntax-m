@@ -1,84 +1,174 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
-  const [imagePreview, setImagePreview] = useState(null);
-  const quillRef = useRef(null); // Create a ref for ReactQuill
+  const [file, setFile] = useState(null);
+  const [imageUploadProgress, setImageUploadProgress] = useState(null);
+  const [imageUploadError, setImageUploadError] = useState(null);
+  const [formData, setFormData] = useState({});
+  const [publishError, setPublishError] = useState(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const navigate = useNavigate();
+
+  const handleUploadImage = async () => {
+    try {
+      if (!file) {
+        setImageUploadError("Please select an image");
+        return;
+      }
+      setImageUploadError(null);
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + "-" + file.name;
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setImageUploadProgress(progress.toFixed(0));
+        },
+        (error) => {
+          setImageUploadError("Image upload failed");
+          setImageUploadProgress(null);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImageUploadProgress(null);
+            setImageUploadError(null);
+            setFormData({ ...formData, image: downloadURL });
+          });
+        }
+      );
+    } catch (error) {
+      setImageUploadError("Image upload failed");
+      setImageUploadProgress(null);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+
+      setPublishError(null);
+      navigate(`/post/${data.slug}`);
+    } catch (error) {
+      setPublishError("Something went wrong");
     }
   };
 
   return (
-    <div className="bg-light-background dark:bg-gray-900 text-light-text dark:text-dark-text">
-      <div className="p-6 max-w-3xl mx-auto min-h-screen flex flex-col justify-center">
-        <h1 className="text-center text-4xl my-10 font-bold text-blue-600 dark:text-blue-400">
+    <div className="bg-light-background dark:bg-gray-900 text-light-text dark:text-dark-text min-h-screen p-4">
+      <div className="max-w-3xl mx-auto pt-10">
+        <h1 className="text-center text-3xl my-7 font-semibold text-blue-600 dark:text-blue-200">
           Create Post
         </h1>
-        <form className="flex flex-col gap-6 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
-          <div className="flex flex-col gap-4">
+        <form
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 space-y-6"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex flex-col gap-4 sm:flex-row justify-between p-2">
             <input
               type="text"
               placeholder="Title"
               required
               id="title"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
             />
+            <select
+              onChange={(e) =>
+                setFormData({ ...formData, category: e.target.value })
+              }
+              className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="uncategorized">Select a category</option>
+              <option value="javascript">JavaScript</option>
+              <option value="reactjs">React.js</option>
+              <option value="nextjs">Next.js</option>
+            </select>
           </div>
-          <div className="flex flex-col gap-4 items-center">
-            {imagePreview ? (
-              <div className="relative">
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="h-24 w-24 object-cover rounded-full border border-gray-300"
-                />
-                <button
-                  type="button"
-                  className="absolute top-0 right-0 bg-red-600 text-white p-1 rounded-full"
-                  onClick={() => setImagePreview(null)}
-                >
-                  ✕
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center border-4 border-blue-400 border-dotted p-4 rounded-lg bg-gray-100 dark:bg-gray-700">
-                <input
-                  id="file-input"
-                  className="hidden"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-                <label
-                  htmlFor="file-input"
-                  className="cursor-pointer text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  Choose an image to upload
-                </label>
-              </div>
-            )}
+          <div className="flex flex-row gap-4 items-center justify-between p-3">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setFile(e.target.files[0])}
+              className="block w-full text-sm text-gray-900 border px-4 py-2 border-gray-500 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            />
+            <button
+              type="button"
+              onClick={handleUploadImage}
+              disabled={imageUploadProgress}
+              className="inline-flex items-center justify-center px-4 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              {imageUploadProgress ? (
+                <div className="w-16 h-16">
+                  <CircularProgressbar
+                    value={imageUploadProgress}
+                    text={`${imageUploadProgress || 0}%`}
+                  />
+                </div>
+              ) : (
+                "Upload Image"
+              )}
+            </button>
           </div>
+          {imageUploadError && (
+            <div className="text-red-500 text-sm">{imageUploadError}</div>
+          )}
+          {formData.image && (
+            <div className="flex justify-center">
+              <img
+                src={formData.image}
+                alt="upload"
+                className="w-48 h-48 object-cover rounded-lg shadow-lg"
+              />
+            </div>
+          )}
           <ReactQuill
-            ref={quillRef} // Attach ref to ReactQuill
             theme="snow"
             placeholder="Write something..."
             className="h-72 mb-12"
+            required
+            onChange={(value) => {
+              setFormData({ ...formData, content: value });
+            }}
           />
+          <div className="p-4"></div>
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+            className="inline-flex items-center justify-center w-full px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
           >
             Publish
           </button>
+          {publishError && (
+            <div className="mt-5 text-red-500 text-sm">{publishError}</div>
+          )}
         </form>
       </div>
     </div>

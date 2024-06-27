@@ -44,7 +44,22 @@ const DashUsers = () => {
       console.log(error);
     }
   };
-  const handleDeleteUser = async () => {};
+  const handleDeleteUser = async () => {
+    try {
+      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
+        setShowModal(false);
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-full md:max-w-[80%] overflow-auto p-4 bg-light-background dark:bg-gray-900 text-light-text dark:text-dark-text">

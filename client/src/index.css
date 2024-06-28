@@ -5,10 +5,44 @@
 body {
   height: 100vh;
 }
-.ql-editor {
-  font-size: 1.05rem;
+
+/* post..... */
+.post-content p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+.post-content h1, .post-content h2, .post-content h3 {
+  margin: 2rem 0 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.post-content a {
+  color: #4970c7;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.post-content a:hover {
+  color: #274cb8;
+  border-bottom: 2px solid #274cb8;
+}
+.post-content img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.dark html, body .dark{
+  background-color: var(--color-light-background);
+  background-color: theme('colors.gray.900') /* dark mode color */;
+  transition: background-color 0.5s ease;
+}
+
+
+
+/* header.. */
 .underline-animation {
   position: relative;
   display: inline-block;
@@ -32,4 +66,3 @@ body {
   left: 10%;
   transform: translateX(0);
 }
-

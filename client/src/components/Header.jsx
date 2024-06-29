@@ -4,7 +4,6 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { Link, useLocation } from "react-router-dom";
 
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -25,7 +24,6 @@ const Header = () => {
 
   const handleSignout = async () => {
     try {
-      console.log("functioncalled");
       const res = await fetch("/api/user/signout", {
         method: "POST",
       });
@@ -33,7 +31,6 @@ const Header = () => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        console.log("logiut succes");
         dispatch(signoutSuccess());
       }
     } catch (error) {
@@ -369,20 +366,6 @@ const Header = () => {
               />
             </svg>
           ) : (
-            // <svg
-            //   className="w-8 h-6"
-            //   fill="none"
-            //   stroke="currentColor"
-            //   viewBox="0 0 24 24"
-            //   xmlns="http://www.w3.org/2000/svg"
-            // >
-            //   <path
-            //     strokeLinecap="round"
-            //     strokeLinejoin="round"
-            //     strokeWidth="1.5"
-            //     d="M12 3v1m0 16v1m8.657-4.657l-.707.707m-14.85 0l-.707-.707M21 12h-1m-16 0H3m2.464-7.536l-.707.707m0 14.85l-.707-.707M16.95 7.05l-.707.707m-9.192 9.192l-.707-.707M12 5a7 7 0 1 1 0 14 7 7 0 0 1 0-14z"
-            //   />
-            // </svg>
             <svg
               className="w-8 h-6"
               fill="none"

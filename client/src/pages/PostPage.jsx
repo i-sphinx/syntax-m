@@ -34,7 +34,35 @@ const PostPage = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen">
-        Loading...
+        <svg
+          className="animate-spin h-8 w-8 text-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zM2 12a10 10 0 0110-10V0c-5.523 0-10 4.477-10 10h2zm6 10a10 10 0 0010-10H18a8 8 0 01-8 8v2zm8-8a8 8 0 01-8 8v2a10 10 0 0010-10h-2z"
+          ></path>
+        </svg>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-red-500">
+          Failed to load the post. Please try again later.
+        </p>
       </div>
     );
 
@@ -44,14 +72,14 @@ const PostPage = () => {
         {post && post.title}
       </h1>
       <Link to={`/search?category=${post && post.category}`}>
-        <button className="text-gray-500 text-xs rounded-xl border p-2 flex max-w-2xl mx-auto mt-5 hover:text-blue-400">
+        <button className="text-gray-500 text-xs rounded-xl border p-2 flex max-w-2xl mx-auto mt-5 hover:text-blue-400 transition-colors dark:border-gray-600 hover:border-blue-400 hover:dark:border-blue-400">
           {post && post.category}
         </button>
       </Link>
       <img
         src={post && post.image}
         alt={post && post.title}
-        className="mt-10 p-3 max-h-[500px] w-full object-contain"
+        className="mt-10 p-3 max-h-[500px] w-full object-contain rounded-lg shadow-lg"
       />
       <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
         <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
@@ -60,7 +88,7 @@ const PostPage = () => {
         </span>
       </div>
       <div
-        className="p-6 max-w-5xl mt-10 rounded-xl mx-auto w-full post-content dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+        className="p-6 max-w-5xl mt-10 rounded-xl mx-auto w-full post-content dark:bg-gray-800 text-gray-800 dark:text-gray-200 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
       <div className="max-w-6xl mx-auto w-full">

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
 
-const Comment = ({ comment, onLike, onEdit }) => {
+const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
@@ -53,8 +53,8 @@ const Comment = ({ comment, onLike, onEdit }) => {
       <div className="flex-shrink-0 mr-3">
         <img
           className="w-10 h-10 rounded-full bg-gray-200"
-          src={user.profilePicture}
-          alt={user.username}
+          src={user.profilePicture || "default-profile-picture-url"}
+          alt={user.username || "anonymous"}
         />
       </div>
       <div className="flex-1">
@@ -123,13 +123,22 @@ const Comment = ({ comment, onLike, onEdit }) => {
               </p>
               {currentUser &&
                 (currentUser._id === comment.userId || currentUser.isAdmin) && (
-                  <button
-                    onClick={handleEdit}
-                    type="button"
-                    className="text-gray-400 hover:text-blue-500"
-                  >
-                    Edit
-                  </button>
+                  <>
+                    <button
+                      onClick={handleEdit}
+                      type="button"
+                      className="text-gray-400 hover:text-blue-500"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => onDelete(comment._id)}
+                      type="button"
+                      className="text-gray-400 hover:text-red-500"
+                    >
+                      Delete
+                    </button>
+                  </>
                 )}
             </div>
           </>

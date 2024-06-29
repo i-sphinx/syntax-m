@@ -1,13 +1,28 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import PostCard from "../components/PostCard";
 
 const Home = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const [recentPosts, setRecentPosts] = useState(null);
+
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      try {
+        const res = await fetch(`/api/post/getposts?limit=4`);
+        const data = await res.json();
+        if (res.ok) {
+          setRecentPosts(data.posts);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchRecentPosts();
+  }, []);
 
   return (
     <div className="grid lg:grid-cols-2 gap-12 min-h-screen w-full h-full bg-light-background dark:bg-gray-900 pt-10">
       {/* Left Side */}
-      <div className="flex flex-col items-center justify-center ">
+      <div className="flex flex-col items-center justify-center">
         <img
           className="w-48 h-48 lg:w-64 lg:h-64 bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full p-4 mb-10 lg:mb-20"
           src="/images/53920.jpg"
@@ -78,27 +93,39 @@ const Home = () => {
           <span className="text-blue-200 dark:text-blue-600">!</span>
         </h2>
         <div className="grid gap-4">
-          {/* Example post */}
-          {[1, 2, 3, 4].map((post) => (
-            <div
-              key={post}
-              className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-lg p-4 mb-4"
-            >
-              <h3 className="text-blue-600 dark:text-blue-200">
-                Coding and game design apprentice!
-              </h3>
-              <p className="text-gray-800 dark:text-gray-200">
-                Self-proclaimed coding and game design apprentice! Right now,
-                I'm focusing on learning the fundamentals of web development and
-                game design. I enjoy the problem-solving aspect of coding and
-                the creative freedom of designing engaging experiences.
-              </p>
-            </div>
-          ))}
+          {recentPosts &&
+            recentPosts.map((post) => (
+              <div
+                key={post._id}
+                post={post}
+                className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-lg p-4 mb-4"
+              >
+                <h3 className="text-blue-600 dark:text-blue-200 line-clamp-1">
+                  {post.title}
+                </h3>
+                <p className="text-gray-800 dark:text-gray-200 line-clamp-4">
+                  {getPostFirstParagraph(post.content)}
+                </p>
+              </div>
+            ))}
         </div>
       </div>
     </div>
   );
+};
+
+const getPostFirstParagraph = (content) => {
+  const cleanedContent = content
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ");
+
+  const paragraphs = cleanedContent.split(/\n|\r\n/);
+
+  if (paragraphs.length > 0) {
+    return paragraphs[0].trim();
+  }
+
+  return "";
 };
 
 export default Home;

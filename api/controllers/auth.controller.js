@@ -55,7 +55,7 @@ export const signin = async (req, res, next) => {
       process.env.JWT_SECRET
     );
 
-    const { password: pass, ...rest } = validUser._doc;
+    const { password: pass, phoneNumber: phone, ...rest } = validUser._doc;
 
     res
       .status(200)
@@ -77,7 +77,7 @@ export const google = async (req, res, next) => {
         { id: user._id, isAdmin: user.isAdmin },
         process.env.JWT_SECRET
       );
-      const { password, ...rest } = user._doc;
+      const { password, phoneNumber, ...rest } = user._doc;
       res
         .status(200)
         .cookie("access_token", token, {

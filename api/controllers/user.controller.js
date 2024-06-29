@@ -47,7 +47,7 @@ export const updateUser = async (req, res, next) => {
       },
       { new: true }
     );
-    const { password, ...rest } = updatedUser._doc;
+    const { password, phoneNumber, ...rest } = updatedUser._doc;
     res.status(200).json(rest);
   } catch (error) {
     next(error);
@@ -92,7 +92,7 @@ export const getUsers = async (req, res, next) => {
       .limit(limit);
 
     const usersWithoutPassword = users.map((user) => {
-      const { password, ...rest } = user._doc;
+      const { password, phoneNumber, ...rest } = user._doc;
       return rest;
     });
 
@@ -125,7 +125,7 @@ export const getUser = async (req, res, next) => {
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }
-    const { password, ...rest } = user._doc;
+    const { password, phoneNumber, isAdmin, ...rest } = user._doc;
     res.status(200).json(rest);
   } catch (error) {
     next(error);

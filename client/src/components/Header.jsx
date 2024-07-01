@@ -164,11 +164,11 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  to="/Dashboard"
+                  to="/Blog"
                   className="block text-gray-900 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2"
                   onClick={toggleMenu}
                 >
-                  Dashboard
+                  Blog
                 </Link>
               </li>
 
@@ -283,12 +283,12 @@ const Header = () => {
           </li>
           <li>
             <Link
-              to="/Dashboard"
+              to="/Blog"
               className={`block text-gray-900 dark:text-white rounded px-4 py-2 underline-animation ${
-                location.pathname === "/Dashboard" ? "underline-active" : ""
+                location.pathname === "/Blog" ? "underline-active" : ""
               }`}
             >
-              Dashboard
+              Blog
             </Link>
           </li>
         </ul>

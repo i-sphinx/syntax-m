@@ -37,10 +37,9 @@ const Blog = () => {
         setLoading(false);
       }
     };
-    if (currentUser.isAdmin) {
-      fetchPosts();
-    }
-  }, [currentUser._id, currentUser.isAdmin]);
+
+    fetchPosts();
+  }, [currentUser._id]);
 
   const handleShowMore = async () => {
     const startIndex = userPosts.length;

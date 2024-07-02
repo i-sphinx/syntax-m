@@ -14,7 +14,4 @@ export default defineConfig({
   },
 
   plugins: [react()],
-  build: {
-    outDir: path.resolve(__dirname, "dist"),
-  },
 });

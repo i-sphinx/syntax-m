@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [recentPosts, setRecentPosts] = useState(null);
@@ -29,24 +30,29 @@ const Home = () => {
           alt="Author"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.7, ease: "circOut", delay: 0.2 }}
         />
 
         <div className="text-center space-y-4 p-2">
           <motion.h1
-            whileHover={{ scale: 1.05 }}
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
+            whileHover={{ scale: 1.05, color: "#007bff" }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.7, ease: "easeInOut" }}
             className="text-3xl font-bold text-blue-600 dark:text-blue-200 mb-4"
           >
             Hi there, I'm Prince!
           </motion.h1>
           <motion.p
             whileHover={{ scale: 1.05 }}
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              delay: 0.3,
+              duration: 0.7,
+              ease: "easeInOut",
+              staggerChildren: 0.1,
+            }}
             className="text-gray-800 dark:text-gray-200 text-lg"
           >
             I'm a self-proclaimed coding and game design apprentice. Right now,
@@ -92,19 +98,6 @@ const Home = () => {
                   fill="currentColor"
                   className="w-6 h-6 text-light-secondary dark:text-dark-secondary"
                 >
-                  <path d="M12 2c-5.523 0-10 4.477-10 10 0 4.109 2.468 7.674 6 9.192-.083-.779-.157-1.975.033-2.828.172-.744 1.115-4.73 1.115-4.73s-.285-.572-.285-1.415c0-1.327.77-2.318 1.728-2.318.814 0 1.207.611 1.207 1.342 0 .818-.521 2.041-.791 3.174-.228.963.482 1.748 1.428 1.748 1.714 0 3.029-1.807 3.029-4.413 0-2.306-1.656-3.922-4.03-3.922-2.743 0-4.35 2.055-4.35 4.18 0 .826.318 1.714.718 2.197.08.095.092.178.068.274-.075.3-.245.963-.278 1.096-.045.18-.145.221-.334.134-1.247-.58-2.028-2.397-2.028-3.863 0-3.138 2.274-6.022 6.566-6.022 3.444 0 6.122 2.454 6.122 5.742 0 3.425-2.157 6.179-5.153 6.179-1.004 0-1.95-.523-2.274-1.144l-.621 2.368c-.223.86-.83 1.937-1.238 2.595.93.288 1.916.445 2.938.445 5.523 0 10-4.477 10-10 0-5.522-4.477-10-10-10z" />
-                </svg>
-              </motion.li>
-              <motion.li
-                whileHover={{ scale: 1.2 }}
-                className="transition transform duration-200"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-6 h-6 text-light-secondary dark:text-dark-secondary"
-                >
                   <path d="M19.769 3H4.231A1.232 1.232 0 0 0 3 4.231v15.538A1.232 1.232 0 0 0 4.231 21h15.538A1.232 1.232 0 0 0 21 19.769V4.231A1.232 1.232 0 0 0 19.769 3zM8.594 18.306H5.779v-7.4h2.815v7.4zM7.187 9.426a1.65 1.65 0 1 1 .002-3.299 1.65 1.65 0 0 1-.002 3.299zm11.119 8.88h-2.814v-3.722c0-.887-.016-2.027-1.237-2.027-1.237 0-1.426.967-1.426 1.967v3.782h-2.815v-7.4h2.703v1.011h.037c.376-.712 1.296-1.463 2.664-1.463 2.85 0 3.376 1.877 3.376 4.319v3.533z" />
                 </svg>
               </motion.li>
@@ -125,24 +118,27 @@ const Home = () => {
           Recent Posts
           <span className="text-blue-200 dark:text-blue-600">!</span>
         </motion.h2>
+
         <div className="grid gap-4">
           {recentPosts &&
             recentPosts.map((post) => (
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5, ease: "easeInOut" }}
                 key={post._id}
                 post={post}
                 className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-lg p-4 mb-4"
               >
-                <h3 className="text-blue-600 dark:text-blue-200 line-clamp-1">
-                  {post.title}
-                </h3>
-                <p className="text-gray-800 dark:text-gray-200 line-clamp-4">
-                  {getPostFirstParagraph(post.content)}
-                </p>
+                <Link to={`/post/${post.slug}`}>
+                  <h3 className="text-blue-600 dark:text-blue-200 line-clamp-1">
+                    {post.title}
+                  </h3>
+                  <p className="text-gray-800 dark:text-gray-200 line-clamp-4">
+                    {getPostFirstParagraph(post.content)}
+                  </p>
+                </Link>
               </motion.div>
             ))}
         </div>
@@ -152,9 +148,7 @@ const Home = () => {
 };
 
 const getPostFirstParagraph = (content) => {
-  const cleanedContent = content
-    .replace(/<[^>]+>/g, "")
-    .replace(/&nbsp;/g, " ");
+  const cleanedContent = content.replace(/<[^>]+>/g, "").replace(/ /g, " ");
 
   const paragraphs = cleanedContent.split(/\n|\r\n/);
 

@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
 import PostCard from "../components/PostCard";
+import hljs from "highlight.js";
+import "highlight.js/styles/github.css"; // Or any other highlight.js theme
 
 const PostPage = () => {
   const { postSlug } = useParams();
@@ -47,6 +49,14 @@ const PostPage = () => {
     };
     fetchRecentPosts();
   }, []);
+
+  useEffect(() => {
+    if (post) {
+      document.querySelectorAll("pre code").forEach((block) => {
+        hljs.highlightBlock(block);
+      });
+    }
+  }, [post]);
 
   if (loading)
     return (

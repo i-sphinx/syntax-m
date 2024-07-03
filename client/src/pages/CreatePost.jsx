@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import hljs from "highlight.js";
+import "highlight.js/styles/github.css";
 import {
   getDownloadURL,
   getStorage,
@@ -11,6 +13,30 @@ import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom";
+
+// Configure Quill to use the syntax module
+const modules = {
+  syntax: {
+    highlight: (text) => hljs.highlightAuto(text).value,
+  },
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["bold", "italic", "underline"],
+    ["code-block"],
+  ],
+};
+
+const formats = [
+  "header",
+  "font",
+  "list",
+  "bullet",
+  "bold",
+  "italic",
+  "underline",
+  "code-block",
+];
 
 const CreatePost = () => {
   const [file, setFile] = useState(null);
@@ -155,6 +181,8 @@ const CreatePost = () => {
             placeholder="Write something..."
             className="h-72 mb-12"
             required
+            modules={modules}
+            formats={formats}
             onChange={(value) => {
               setFormData({ ...formData, content: value });
             }}

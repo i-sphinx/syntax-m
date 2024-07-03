@@ -14,7 +14,7 @@ export default function Oauth() {
     provider.setCustomParameters({ prompt: "select_account" });
     try {
       const resultsFromGoogle = await signInWithPopup(auth, provider);
-      // Assuming you have the user's phone number in the Google profile
+
       const phoneNumber = resultsFromGoogle.user.phoneNumber || "";
 
       const res = await fetch("/api/auth/google", {
@@ -24,7 +24,7 @@ export default function Oauth() {
           name: resultsFromGoogle.user.displayName,
           email: resultsFromGoogle.user.email,
           googlePhotoUrl: resultsFromGoogle.user.photoURL,
-          phoneNumber, // Include phone number
+          phoneNumber,
         }),
       });
 

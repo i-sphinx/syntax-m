@@ -12,7 +12,9 @@ body {
   line-height: 1.6;
   font-size: 1rem;
 }
-.post-content h1, .post-content h2, .post-content h3 {
+.post-content h1,
+.post-content h2,
+.post-content h3 {
   margin: 2rem 0 1rem;
   font-weight: 700;
   line-height: 1.2;
@@ -34,13 +36,34 @@ body {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.dark html, body .dark{
+.dark html,
+body .dark {
   background-color: var(--color-light-background);
-  background-color: theme('colors.gray.900') /* dark mode color */;
+  background-color: theme("colors.gray.900") /* dark mode color */;
   transition: background-color 0.5s ease;
 }
+/* Add this to your CSS file */
+.post-content pre {
+  background: #f5f5f5; /* Light mode background */
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  max-width: 100%;
+}
 
+.post-content pre code {
+  background: none;
+  display: block;
+  color: #333; /* Light mode text color */
+}
 
+.dark .post-content pre {
+  background: #2d2d2d; /* Dark mode background */
+}
+
+.dark .post-content pre code {
+  color: #ccc; /* Dark mode text color */
+}
 
 /* header.. */
 .underline-animation {

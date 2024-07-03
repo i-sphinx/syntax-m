@@ -11,13 +11,23 @@ export default function Projects() {
       </div>
       {/* remove above all div */}
 
-      <div className="min-h-screen max-w-5xl mx-auto flex justify-center items-center flex-col gap-6 p-3">
-        <h1 className="text-3xl font-semibold uppercase underline">Projects</h1>
-        <p className="text-md text-gray-500">
-          Build fun and engaging projects while learning HTML, CSS, and
-          JavaScript!
+      <div className="min-h-screen max-w-5xl mx-auto flex justify-center items-center flex-col gap-6 p-3 mt-4">
+        <h1 className="text-3xl font-bold uppercase underline dark:text-gray-300">
+          Projects
+        </h1>
+        <p className="text-md text-gray-500 mb-20">
+          Learning to Code: Web Apps and Unity Games
         </p>
-        <CallToAction />
+
+        {/* add your projects here... */}
+
+        <CallToAction
+          title="Want to learn more about cool photos?"
+          description="Check out these images on Google."
+          buttonText="GET IT NOW!"
+          buttonLink="https://www.google.com"
+          imageUrl="https://png.pngtree.com/thumb_back/fh260/background/20230720/pngtree-blue-and-purple-neon-star-3d-art-background-with-a-cool-image_3705286.jpg"
+        />
       </div>
     </div>
   );

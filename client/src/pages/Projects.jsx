@@ -20,9 +20,16 @@ export default function Projects() {
         </p>
 
         {/* add your projects here... */}
+        <CallToAction
+          title="Made a full stack mern Project with my personal blogs in it!"
+          description="In this project i have used full stack mern with firebase auth and fully functional database setup"
+          buttonText="EXPLORE"
+          buttonLink="https://syntax-sunrise.onrender.com/"
+          imageUrl="/images/projects/webpreview.png"
+        />
 
         <CallToAction
-          title="Want to learn more about cool photos?"
+          title="Want to learn more about cool photos? demo"
           description="Check out these images on Google."
           buttonText="GET IT NOW!"
           buttonLink="https://www.google.com"

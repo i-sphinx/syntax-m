@@ -9,7 +9,7 @@ export default function CallToAction({
 }) {
   return (
     <div className="flex-row sm:flex border-dashed border-2 p-2 border-gray-200 dark:border-teal-200 rounded-lg m-5">
-      <div className="flex-col m-4 p-4 text-center self-center">
+      <div className="flex-col m-4 p-4 text-center self-center flex-1">
         <h2 className="text-2xl font-bold mb-2 capitalize text-gray-900 dark:text-gray-300">
           {title}
         </h2>
@@ -25,7 +25,7 @@ export default function CallToAction({
         </a>
       </div>
 
-      <div className="p-7 rounded-lg border border-gray-200 dark:border-teal-200">
+      <div className="p-7 rounded-lg border border-gray-200 dark:border-teal-200 aspect-video flex-1">
         <img src={imageUrl} alt="image" className="w-full rounded-lg" />
       </div>
     </div>

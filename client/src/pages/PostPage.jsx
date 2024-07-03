@@ -4,7 +4,8 @@ import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
 import PostCard from "../components/PostCard";
 import hljs from "highlight.js";
-import "highlight.js/styles/github.css"; // Or any other highlight.js theme
+import "highlight.js/styles/github-dark.css";
+// import "highlight.js/styles/monokai.css";
 
 const PostPage = () => {
   const { postSlug } = useParams();

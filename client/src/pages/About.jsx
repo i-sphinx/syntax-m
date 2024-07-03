@@ -3,9 +3,9 @@ export default function About() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
         <img
-          src="your-avatar-url.jpg"
-          alt="Your Avatar"
-          className="w-32 h-32 mx-auto rounded-full shadow-md mb-6"
+          src="/images/profile.jpeg"
+          alt="Prince"
+          className="w-32 h-32 mx-auto rounded-full shadow-md mb-6 object-cover"
         />
         <h1 className="text-4xl font-bold text-center my-7 text-gray-800 dark:text-gray-200">
           Who am I?

@@ -4,13 +4,22 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const getPostFirstParagraph = (content) => {
-  const cleanedContent = content
+  // Remove content inside <pre></pre> tags
+  const withoutPreContent = content.replace(/<pre[^>]*>[\s\S]*?<\/pre>/gi, "");
+
+  // Remove all other HTML tags and replace non-breaking spaces with regular spaces
+  const cleanedContent = withoutPreContent
     .replace(/<[^>]+>/g, "")
-    .replace(/&nbsp;/g, " ");
+    .replace(/ /g, " ");
+
+  // Split the cleaned content into paragraphs
   const paragraphs = cleanedContent.split(/\n|\r\n/);
+
+  // Return the first paragraph if it exists
   if (paragraphs.length > 0) {
     return paragraphs[0].trim();
   }
+
   return "";
 };
 
@@ -39,7 +48,7 @@ const Blog = () => {
     };
 
     fetchPosts();
-  }, [currentUser._id]);
+  }, []);
 
   const handleShowMore = async () => {
     const startIndex = userPosts.length;
